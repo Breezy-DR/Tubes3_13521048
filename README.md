@@ -1,8 +1,6 @@
-# Tubes3_13521048
-This is a repository for Tugas Besar 3 III IF2211 Strategi Algoritma Semester II Tahun 2022/2023 for the group "geepeetee" (36)
 
-# Project Name
-> Outline a brief description of your project.
+# Tubes3_13521048
+> Tugas Besar III IF2211 Strategi Algoritma Semester II Tahun 2022/2023 Penerapan String Matching dan Regular Expression dalam Pembuatan ChatGPT Sederhana
 > Live demo [_here_](https://www.example.com). <!-- If you have the project hosted somewhere, include the link here. -->
 
 ## Table of Contents
