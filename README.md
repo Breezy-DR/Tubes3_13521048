@@ -11,31 +11,28 @@
 * [Setup](#setup)
 * [Usage](#usage)
 * [Project Status](#project-status)
-* [Room for Improvement](#room-for-improvement)
 * [Acknowledgements](#acknowledgements)
-* [Contact](#contact)
+* [Author](#author)
 <!-- * [License](#license) -->
 
 
 ## General Information
-- Provide general information about your project here.
-- What problem does it (intend to) solve?
-- What is the purpose of your project?
-- Why did you undertake it?
+- Program ini merupakan aplikasi berbasis website ChatGPT sederhana dengan mengaplikasikan pendekatan QA KMP Pattern Search and Boyer-Moore Pattern Search.
+- Implementasi berupa Pencocokan String dengan metode KMP, metode BM, klasifikasi menggunakan regex, dan aplikasi web berupa front-end dan back-end
 <!-- You don't have to answer all the questions - just the ones relevant to your project. -->
 
 
 ## Technologies Used
-- Tech 1 - version 1.0
-- Tech 2 - version 2.0
-- Tech 3 - version 3.0
+- Kasih tahu bahasa pemrogramannya apa
 
 
 ## Features
 List the ready features here:
-- Awesome feature 1
-- Awesome feature 2
-- Awesome feature 3
+- Fitur Pertanyaan Teks 
+- Fitur Kalkulator
+- Fitur Tanggal
+- Menambahkan pertanyaan dari jawaban ke database
+- Menghapus pertanyaan dari database
 
 
 ## Screenshots
@@ -53,23 +50,9 @@ Proceed to describe how to install / setup one's local environment / get started
 How does one go about using it?
 Provide various use cases and code examples here.
 
-`write-your-code-here`
-
 
 ## Project Status
 Project is: _complete_
-
-
-## Room for Improvement
-Include areas you believe need improvement / could be improved. Also add TODOs for future development.
-
-Room for improvement:
-- Improvement to be done 1
-- Improvement to be done 2
-
-To do:
-- Feature to be added 1
-- Feature to be added 2
 
 
 ## Acknowledgements
