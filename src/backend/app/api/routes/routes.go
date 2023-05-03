@@ -10,11 +10,11 @@ type Route interface {
 	Setup()
 }
 
-func NewRoutes(
-	questionRoutes QuestionRoutes,
-) Routes {
+func NewRoutes(questionRoutes QuestionRoutes,
+	historyRoutes HistoryRoutes) Routes {
 	return Routes{
 		questionRoutes,
+		historyRoutes,
 	}
 }
 
@@ -27,4 +27,5 @@ func (r Routes) Setup() {
 var Module = fx.Options(
 	fx.Provide(NewQuestionRoutes),
 	fx.Provide(NewRoutes),
+	fx.Provide(NewHistoryRoutes),
 )

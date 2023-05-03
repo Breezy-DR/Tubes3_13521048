@@ -3,8 +3,8 @@ package modules
 import (
 	"backend/app/api/controllers"
 	"backend/app/api/routes"
+	"backend/app/gorms"
 	"backend/app/services"
-
 	//"backend/app/api/routes"
 	"backend/app/server"
 	"context"
@@ -16,6 +16,7 @@ var Module = fx.Options(
 	services.Module,
 	controllers.Module,
 	routes.Module,
+	gorms.Module,
 	fx.Invoke(registerHooks),
 )
 
