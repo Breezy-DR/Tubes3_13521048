@@ -91,14 +91,15 @@ func (q QuestionService) GetAnswer(question string, sessionID string, searchAlg 
 		found = true
 		if ansArr == nil {
 			res = ans.Answer
+		} else {
+			var sb strings.Builder
+			sb.WriteString(notFound + "\n" + "Apakah maksud anda:\n")
+			for i := 0; i < len(ansArr); i++ {
+				sb.WriteString(ansArr[i].Question)
+				sb.WriteString("\n")
+			}
+			res = sb.String()
 		}
-		var sb strings.Builder
-		sb.WriteString(notFound + "\n" + "Apakah maksud anda:\n")
-		for i := 0; i < len(ansArr); i++ {
-			sb.WriteString(ansArr[i].Question)
-			sb.WriteString("\n")
-		}
-		res = sb.String()
 	}
 
 	q.g.Gorm.Create(&models.History{SessionID: sessionID, UserEntry: question, Answer: res, CreationDate: time.Now()})
