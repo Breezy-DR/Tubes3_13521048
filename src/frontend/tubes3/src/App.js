@@ -28,9 +28,13 @@ function App() {
         </div>
         </div>
     </div>
+    {/* <div className='TitleText'>
+    Hi! I'm ChatGPT-chan~
+      </div> */}
       <div className='container'>
       {/* <button onClick={testClick}>button</button> */}
-
+        
+         
         <Sidebar/>
         <Chat/>
       </div>

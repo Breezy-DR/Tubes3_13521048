@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 function Chat() {
   
-  const[data, setData] = useState('');
+  const[data, setData] = useState([]);
 
   const API = 'https://my-json-server.typicode.com/Breezy-DR/chatTesting/Chats'
 
