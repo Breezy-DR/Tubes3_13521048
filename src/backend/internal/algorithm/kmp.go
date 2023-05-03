@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func SolveKmp(pattern, text string) int {
+func SearchKMP(pattern, text string) int {
 	var patternLen = len(pattern)
 	var revIdx = getJumpArr(pattern)
 

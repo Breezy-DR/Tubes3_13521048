@@ -2,7 +2,6 @@ package algorithm
 
 import (
 	"backend/internal/util"
-	"fmt"
 	"math"
 )
 
@@ -13,7 +12,7 @@ func GetLevDistance(searchStr, text string) int {
 		distMatrix = make([][]int, textLen+1)
 	)
 
-	fmt.Println(textLen, searchLen)
+	//fmt.Println(textLen, searchLen)
 
 	distMatrix[0] = make([]int, searchLen+1)
 	for i := 0; i < searchLen+1; i++ {
@@ -35,8 +34,8 @@ func GetLevDistance(searchStr, text string) int {
 			distMatrix[i][j] = temp
 		}
 	}
-	for i := 0; i < textLen+1; i++ {
-		fmt.Println(distMatrix[i])
-	}
+	//for i := 0; i < textLen+1; i++ {
+	//	fmt.Println(distMatrix[i])
+	//}
 	return distMatrix[textLen][searchLen]
 }
