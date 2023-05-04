@@ -23,7 +23,7 @@ function ChatForm({childToParent}) {
   return (
     <div className='ChatForm'>
       <form onSubmit={handleSubmit}>
-      <input type='text' name="message" placeholder='Silakan masukkan pertanyaan Anda...' onChange={handleChange} onKeyDown={handleKeyDown}/>
+      <input type='text' name="message" placeholder='Masukkan pertanyaan Anda (press enter to submit)' onChange={handleChange} onKeyDown={handleKeyDown}/>
       </form>
     </div>
   )
