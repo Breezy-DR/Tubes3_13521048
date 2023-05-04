@@ -19,6 +19,7 @@ type QuestionRequestBody struct {
 
 func (q QuestionController) GetAnswer(ctx *gin.Context) {
 	var reqBody QuestionRequestBody
+	ctx.Header("Access-Control-Allow-Origin", "*")
 
 	if err := ctx.BindJSON(&reqBody); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
@@ -46,7 +47,6 @@ func (q QuestionController) GetAnswer(ctx *gin.Context) {
 	}
 
 	resp, found := q.questionService.GetAnswer(reqBody.Question, sessionId, reqBody.SearchAlg)
-	ctx.Header("Access-Control-Allow-Origin", "*")
 	ctx.JSON(http.StatusOK, gin.H{
 		"answer_found": found,
 		"response":     resp,
