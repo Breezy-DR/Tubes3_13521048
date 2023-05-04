@@ -11,10 +11,10 @@ type HistoryRoutes struct {
 }
 
 func (h HistoryRoutes) Setup() {
-	api := h.requestHandler.Gin.Group("/history")
+	api := h.requestHandler.Gin.Group("history")
 	{
-		api.GET("/", h.historyController.GetHistories)
-		api.GET("/:sessionId", h.historyController.GetHistory)
+		api.POST("", h.historyController.GetHistories)
+		api.POST(":sessionId", h.historyController.GetHistory)
 	}
 }
 

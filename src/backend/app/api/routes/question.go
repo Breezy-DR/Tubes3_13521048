@@ -11,9 +11,9 @@ type QuestionRoutes struct {
 }
 
 func (q QuestionRoutes) Setup() {
-	api := q.requestHandler.Gin.Group("/question")
+	api := q.requestHandler.Gin.Group("question")
 	{
-		api.GET("/", q.questionController.GetAnswer)
+		api.POST("", q.questionController.GetAnswer)
 	}
 }
 

@@ -4,10 +4,10 @@ import (
 	"backend/app/api/controllers"
 	"backend/app/api/routes"
 	"backend/app/gorms"
-	"backend/app/services"
-	//"backend/app/api/routes"
 	"backend/app/server"
+	"backend/app/services"
 	"context"
+	"github.com/gin-contrib/cors"
 	"go.uber.org/fx"
 )
 
@@ -26,6 +26,7 @@ func registerHooks(lifecycle fx.Lifecycle, h *server.RequestHandler, r routes.Ro
 			OnStart: func(context.Context) error {
 				go func() {
 					r.Setup()
+					h.Gin.Use(cors.Default())
 					err := h.Gin.Run(":8080")
 					if err != nil {
 					}

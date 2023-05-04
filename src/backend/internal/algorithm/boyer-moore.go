@@ -1,7 +1,6 @@
 package algorithm
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -19,7 +18,6 @@ func SearchBM(pattern, text string) int {
 		return -1
 	}
 	for j > -1 && idx < textLen {
-		fmt.Println(j, idx)
 		if text[idx] != pattern[j] {
 			ni := charShiftTable[text[idx]]
 			idx += patternLen - int(math.Min(float64(j), float64(ni+1)))
@@ -35,7 +33,6 @@ func SearchBM(pattern, text string) int {
 		return -1
 	}
 
-	fmt.Println("bm found!:", idx+1)
 	return idx + 1
 }
 
