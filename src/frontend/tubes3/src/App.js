@@ -3,21 +3,8 @@ import React, { useState } from 'react'
 import Sidebar from './component/Sidebar';
 import './AppStyle.scss';
 import Chat from './component/Chat';
-import io from 'socket.io-client'
-
-const socket = io.connect("http://localhost:3001");
 
 function App() {
-  const current = new Date();
-  const time = current.toLocaleTimeString("en-US");
-  // const testClick = () => {
-  //   alert(time);
-  // };
-  const history_data = [
-    {
-
-    }
-  ]
 
   return (
     <div className="App">

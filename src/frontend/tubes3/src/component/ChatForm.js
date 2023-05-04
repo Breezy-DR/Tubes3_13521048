@@ -2,20 +2,29 @@ import React from 'react'
 import { useState } from 'react'
 
 function ChatForm({childToParent}) {
-  const [message, setMessage] = useState('');
+  const [message, setInputValue] = useState('');
   const handleChange = (event) => {
-    setMessage(event.target.value);
+    setInputValue(event.target.value);
   }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Send input (message) to database here
+    // ....
+    console.log(message);
+  };
 
   const handleKeyDown = (event) => {
     if(event.key === 'Enter') {
-      setMessage(event.target.value);
-      childToParent(message);
+      handleSubmit(event);
     }
   }
+
   return (
     <div className='ChatForm'>
-        <input type='text' name="message" placeholder='Silakan masukkan pertanyaan Anda...' onChange={handleChange} onKeyDown={handleKeyDown}/>
+      <form onSubmit={handleSubmit}>
+      <input type='text' name="message" placeholder='Silakan masukkan pertanyaan Anda...' onChange={handleChange} onKeyDown={handleKeyDown}/>
+      </form>
     </div>
   )
 }
