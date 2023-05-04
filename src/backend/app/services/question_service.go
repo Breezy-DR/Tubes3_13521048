@@ -6,7 +6,6 @@ import (
 	"backend/internal/algorithm"
 	"backend/internal/util"
 	"fmt"
-	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -21,37 +20,65 @@ type SimilarityPair struct {
 	question   models.QuestionNA
 }
 
-const CalculatorRegex string = "\\s*(([\\+\\-\\*\\/()^]|\\d)+\\s*)*\\s*"
-const DateRegex string = "((\\d{4}[\\/-]\\d{1,2}[\\/-]\\d{1,2})|(\\d{1,2}[\\/-]\\d{1,2}[\\/-]\\d{4}))"
-const AddRegex string = "(?i)tambahkan pertanyaan\\s+[\\x00-\\x7F]+[\\x00-\\x7F\\s]*\\s+dengan\\s+jawaban\\s+[\\x00-\\x7F]+[\\x00-\\x7F\\s]*"
-const RemoveRegex string = "(?i)\\s*hapus\\s+pertanyaan\\s+[\\x00-\\x7F\\s]+[\\x00-\\x7F\\s\\s]*"
-
-const notFound = "pertanyaan tidak ditemukan di database"
+const notFound = "pertanyaan tidak ditemukan di database."
 const unknownErr = "unknown error has occured"
 
-func (q QuestionService) GetAnswer(question string, sessionID string, searchAlg string) (string, bool) {
+func (q QuestionService) GetAnswer(question string, sessionID string, searchAlg string) ([]string, bool) {
+	found := false
+	questions := algorithm.MultiQuestionsRe.Split(question, -1)
+	var histories = make([]models.History, len(questions))
+	var responses = make([]string, len(questions))
+	timeNow := time.Now()
+
+	j := 0
+	for i := 0; i < len(questions); i++ {
+		currentQuestion := strings.Trim(questions[i], " ")
+
+		if currentQuestion == "" {
+			responses = responses[:len(responses)-1]
+			histories = histories[:len(histories)-1]
+			continue
+		}
+
+		temp, f := q.getResponse(currentQuestion, searchAlg)
+		found = found || f
+		responses[j] = temp
+		histories[j] = models.History{SessionID: sessionID, UserEntry: currentQuestion, Answer: temp, CreationDate: timeNow}
+		j++
+	}
+
+	q.g.Gorm.Create(&histories)
+
+	return responses, found
+}
+
+func (q QuestionService) getResponse(question string, searchAlg string) (string, bool) {
 	found := false
 	res := ""
-	if reg, _ := regexp.Compile(DateRegex); util.StringMatches(question, reg) {
+
+	if util.StringMatches(question, algorithm.DateRe) {
 		res = algorithm.GetDayDate(question)
+
 		found = true
-	} else if reg, _ := regexp.Compile(CalculatorRegex); !found && util.StringMatches(question, reg) {
-		// TODO: iterate regex instead of this
+	} else if !found && util.StringMatches(question, algorithm.CalculatorRe) {
 		val, err := algorithm.CalculateExpression(question)
 
 		if err == nil {
 			res = strconv.FormatFloat(val, 'f', 6, 64)
 			found = true
 		}
-	} else if reg, _ := regexp.Compile(AddRegex); !found && util.StringMatches(question, reg) {
+	} else if !found && util.StringMatches(question, algorithm.AddRe) {
 		entries := strings.Split(question, " ")
 		// skip: "tambahkan pertanyaan"
-		i := 2
+		i := 0
+		j := 2
 
-		tReg, _ := regexp.Compile("(?i)dengan")
-
-		for i < len(entries) && !util.StringMatches(entries[i], tReg) {
-			i++
+		for j < len(entries) {
+			if util.StringMatches(entries[j], algorithm.DenganRe) &&
+				j+1 < len(entries) && util.StringMatches(entries[j+1], algorithm.JawabanRe) {
+				i = j
+			}
+			j++
 		}
 
 		if i >= len(entries) {
@@ -66,15 +93,11 @@ func (q QuestionService) GetAnswer(question string, sessionID string, searchAlg 
 		}
 		ans := strings.Join(entries[i:], " ")
 
-		fmt.Println(nQuestion)
-		fmt.Println(ans)
-
 		q.g.Gorm.Create(&models.QuestionNA{Question: nQuestion, Answer: ans})
 
 		found = true
 		res = "Pertanyaan berhasil ditambahkan"
-	} else if reg, _ := regexp.Compile(RemoveRegex); !found && util.StringMatches(question, reg) {
-		//extractorRegex := "\\b(?!tambahkan\\b)(?!pertanyaan\\b)(?!dengan\\b)(?!jawaban\\b)\\w+\\s*"
+	} else if !found && util.StringMatches(question, algorithm.RemoveRe) {
 		entry := strings.SplitN(question, " ", 3)[2]
 		ans, ansArr := q.findMatch(entry, searchAlg)
 
@@ -82,8 +105,9 @@ func (q QuestionService) GetAnswer(question string, sessionID string, searchAlg 
 		if ansArr == nil {
 			q.g.Gorm.Delete(ans)
 			res = "Pertanyaan berhasil dihapus"
+		} else {
+			res = notFound
 		}
-		res = notFound
 	} else if !found {
 		// find with string matcher
 		ans, ansArr := q.findMatch(question, searchAlg)
@@ -93,49 +117,64 @@ func (q QuestionService) GetAnswer(question string, sessionID string, searchAlg 
 			res = ans.Answer
 		} else {
 			var sb strings.Builder
-			sb.WriteString(notFound + "\n" + "Apakah maksud anda:\n")
-			for i := 0; i < len(ansArr); i++ {
-				sb.WriteString(ansArr[i].Question)
-				sb.WriteString("\n")
+			sb.WriteString(notFound)
+			if len(ansArr) > 0 {
+				sb.WriteString(" Apakah maksud anda: ")
+				for i := 0; i < len(ansArr); i++ {
+					sb.WriteString(strconv.Itoa(i + 1))
+					sb.WriteString(". ")
+					sb.WriteString(ansArr[i].Question)
+					sb.WriteString(" ")
+				}
 			}
 			res = sb.String()
 		}
 	}
-
-	q.g.Gorm.Create(&models.History{SessionID: sessionID, UserEntry: question, Answer: res, CreationDate: time.Now()})
-
 	return res, found
 }
 
 func (q QuestionService) findMatch(search, searchAlg string) (models.QuestionNA, []models.QuestionNA) {
 	var (
-		questions  []models.QuestionNA
-		topMatches []SimilarityPair
-		found      = false
-		first      = true
-		result     models.QuestionNA
-		idStart    = 0
+		questions        []models.QuestionNA
+		topMatches       []SimilarityPair
+		found            = false
+		foundExact       = false
+		first            = true
+		result           models.QuestionNA
+		shortestMatchLen = -1
 	)
+	q.g.Gorm.Order("question_id asc").Limit(25).Find(&questions)
 
-	for !found && (first || len(questions) > 0) {
-		q.g.Gorm.Where("question_id BETWEEN ? AND ?", idStart, idStart+25).Find(&questions)
-		for i := 0; !found && i < len(questions); i++ {
+	for !foundExact && (first || len(questions) > 0) {
+		for i := 0; !foundExact && i < len(questions); i++ {
 			question := questions[i].Question
 
-			idx := algorithm.SearchKMP(search, question)
+			var idx int
+			if searchAlg == algorithm.KMP {
+				idx = algorithm.SearchKMP(search, question)
+			} else {
+				idx = algorithm.SearchBM(search, question)
+			}
 
 			if idx != -1 {
 				found = true
-				result = questions[i]
+				if len(search) == len(question) {
+					foundExact = true
+					result = questions[i]
+				} else if shortestMatchLen == -1 || shortestMatchLen > len(question) {
+					result = questions[i]
+					shortestMatchLen = len(question)
+				}
 			} else {
 				distance := algorithm.GetLevDistance(search, question)
-				similarity := float64(len(search)-distance) / float64(len(question))
-				addToSimPair(similarity, questions[i], &topMatches)
+				similarity := float64(len(question)-distance) / float64(len(question))
+				addToSimPairs(similarity, questions[i], &topMatches)
 			}
 
 		}
 		first = false
-		idStart += 25
+		largestIndex := questions[len(questions)-1].QuestionID
+		q.g.Gorm.Where("question_id > ?", largestIndex).Find(&questions)
 	}
 
 	if found {
@@ -143,6 +182,7 @@ func (q QuestionService) findMatch(search, searchAlg string) (models.QuestionNA,
 	}
 
 	if maxIdx := getMaxSimilarity(topMatches); maxIdx != -1 && topMatches[maxIdx].similarity >= 0.9 {
+		fmt.Println(topMatches)
 		return topMatches[maxIdx].question, nil
 	}
 
@@ -155,7 +195,11 @@ func (q QuestionService) findMatch(search, searchAlg string) (models.QuestionNA,
 	return models.QuestionNA{}, resArr
 }
 
-func addToSimPair(similarity float64, question models.QuestionNA, arr *[]SimilarityPair) {
+func addToSimPairs(similarity float64, question models.QuestionNA, arr *[]SimilarityPair) {
+	if similarity < 0.7 {
+		return
+	}
+
 	if len(*arr) < 3 {
 		*arr = append(*arr, SimilarityPair{similarity: similarity, question: question})
 		return
@@ -184,7 +228,7 @@ func getMaxSimilarity(arr []SimilarityPair) int {
 
 	minIdx := 0
 	var minSim = arr[0].similarity
-	for i := 1; i < 3; i++ {
+	for i := 1; i < len(arr); i++ {
 		if arr[i].similarity < minSim {
 			minSim = arr[i].similarity
 			minIdx = i

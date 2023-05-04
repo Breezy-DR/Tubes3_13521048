@@ -1,16 +1,42 @@
 package algorithm
 
-func SolveBm(pattern, text string) {
+import (
+	"fmt"
+	"math"
+)
 
-	//charShiftTable := getCharShiftTable(pattern)
-	//i := 0
-	//j := 0
-	//var textLen = len(text)
-	//var match = false
-	//for i < textLen && !match {
-	//
-	//}
+func SearchBM(pattern, text string) int {
 
+	charShiftTable := getCharShiftTable(pattern)
+	var (
+		textLen    = len(text)
+		patternLen = len(pattern)
+		j          = patternLen - 1
+		idx        = 0
+	)
+
+	if patternLen > textLen {
+		return -1
+	}
+	for j > -1 && idx < textLen {
+		fmt.Println(j, idx)
+		if text[idx] != pattern[j] {
+			ni := charShiftTable[text[idx]]
+			idx += patternLen - int(math.Min(float64(j), float64(ni+1)))
+			j = patternLen - 1
+
+			continue
+		}
+		idx--
+		j--
+	}
+
+	if j != -1 {
+		return -1
+	}
+
+	fmt.Println("bm found!:", idx+1)
+	return idx + 1
 }
 
 func getCharShiftTable(pattern string) map[uint8]int {

@@ -12,11 +12,11 @@ type Gorms struct {
 }
 
 func NewGorms() Gorms {
-	host := ""
+	host := "ec2-54-169-32-134.ap-southeast-1.compute.amazonaws.com"
 	port := "5432"
-	user := ""
-	password := ""
-	dbname := ""
+	user := "stima"
+	password := "stima"
+	dbname := "stima"
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta",
 		host, user, password, dbname, port)

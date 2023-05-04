@@ -2,28 +2,33 @@ package algorithm
 
 import (
 	"backend/internal/util"
-	"fmt"
 )
 
 func SearchKMP(pattern, text string) int {
-	var patternLen = len(pattern)
-	var revIdx = getJumpArr(pattern)
+	var (
+		patternLen = len(pattern)
+		revIdx     = getJumpArr(pattern)
+		textLen    = len(text)
+	)
+
+	if patternLen > textLen {
+		return -1
+	}
 
 	var (
 		j       = -1
 		idx     = 0
 		inMatch = false
-		textLen = len(text)
 		found   = false
 	)
-	for !found && idx < textLen && j < (patternLen-1) {
-		if inMatch && util.EqualCaseIns(pattern[j+1], text[idx]) {
+	for !found && idx < textLen {
+		if inMatch && j < (patternLen-1) && util.EqualCaseIns(pattern[j+1], text[idx]) {
 			j += 1
 		} else if inMatch {
 			foundRev := false
 			for j != -1 && !foundRev {
 				j = revIdx[j] - 1
-				if pattern[j+1] == text[idx] {
+				if j < (patternLen-1) && pattern[j+1] == text[idx] {
 					foundRev = true
 					j += 1
 				}
@@ -31,7 +36,7 @@ func SearchKMP(pattern, text string) int {
 			if j == -1 {
 				inMatch = false
 			}
-		} else if util.EqualCaseIns(pattern[j+1], text[idx]) {
+		} else if j < (patternLen-1) && util.EqualCaseIns(pattern[j+1], text[idx]) {
 			inMatch = true
 			j += 1
 
@@ -44,7 +49,6 @@ func SearchKMP(pattern, text string) int {
 	}
 
 	if found {
-		fmt.Printf("match in kmp found! starting index: %d\n", idx-patternLen)
 		return idx - patternLen
 	}
 	return -1

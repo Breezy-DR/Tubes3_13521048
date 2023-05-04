@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"backend/app/services"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -21,9 +20,15 @@ type QuestionRequestBody struct {
 func (q QuestionController) GetAnswer(ctx *gin.Context) {
 	var reqBody QuestionRequestBody
 	if err := ctx.BindJSON(&reqBody); err != nil {
-		fmt.Println("errrrrrrr")
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "bad request format",
+		})
+		return
+	}
+
+	if reqBody.SessionID != "" && !q.sessionService.SessionExists(reqBody.SessionID) {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": "session id does not exist",
 		})
 		return
 	}
