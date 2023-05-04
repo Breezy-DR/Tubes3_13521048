@@ -11,7 +11,7 @@ type HistoryService struct {
 
 func (h HistoryService) GetHistory(sessionId string) []models.History {
 	var histories []models.History
-	h.g.Gorm.Where("session_id = ?", sessionId).Find(&histories)
+	h.g.Gorm.Where("session_id = ?", sessionId).Order("creation_date asc").Find(&histories)
 
 	return histories
 }
