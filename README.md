@@ -2,6 +2,7 @@
 # Tubes3_13521048
 > Tugas Besar III IF2211 Strategi Algoritma Semester II Tahun 2022/2023 Penerapan String Matching dan Regular Expression dalam Pembuatan ChatGPT Sederhana
 > Live demo [_here_](https://www.example.com). <!-- If you have the project hosted somewhere, include the link here. -->
+> Kami juga telah mendeploy program kami, website [_here_](http://ec2-52-221-241-44.ap-southeast-1.compute.amazonaws.com:3000/).
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -23,7 +24,7 @@
 
 
 ## Technologies Used
-- Kasih tahu bahasa pemrogramannya apa
+Kami memakai bahasa Go-lang sebagai bahasa back-end dan bahasa Reactjs sebagai front-end, serta mysql untuk menyimpan database.
 
 
 ## Features
@@ -36,7 +37,7 @@ List the ready features here:
 
 
 ## Screenshots
-![Example screenshot](./img/screenshot.png)
+![Example screenshot](./img/Screenshot.jpg)
 <!-- If you have screenshots you'd like to share, include them here. -->
 
 
@@ -47,8 +48,8 @@ Proceed to describe how to install / setup one's local environment / get started
 
 
 ## Usage
-How does one go about using it?
-Provide various use cases and code examples here.
+Pengguna tinggal menambah pertanyaan yang diinginkan dengan format "Tambahkan pertanyaan xxx dengan jawaban yyy" (pastikan xxx tidak diakhiri tanda tanya). Pengguna lalu dapat bertanya mengenai pertanyaan yang sudah dimasukkan. Pengguna juga bisa bertanya hari apa di tanggal tertentu (ketik "DD/MM/YYYY") dan operasi matematika sederhana dengan operator +, -, *, /, (). Pengguna juga bisa menghapus data dengan format “Hapus
+pertanyaan xxx”.
 
 
 ## Project Status
