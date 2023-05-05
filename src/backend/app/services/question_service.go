@@ -172,7 +172,7 @@ func (q QuestionService) findMatch(search, searchAlg string) (models.QuestionNA,
 
 		}
 		largestIndex := questions[len(questions)-1].QuestionID
-		q.g.Gorm.Where("question_id > ?", largestIndex).Find(&questions)
+		q.g.Gorm.Where("question_id > ?", largestIndex).Limit(25).Find(&questions)
 	}
 
 	if found {
