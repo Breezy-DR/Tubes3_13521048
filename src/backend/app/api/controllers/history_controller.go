@@ -13,12 +13,14 @@ type HistoryController struct {
 
 func (h HistoryController) GetHistories(ctx *gin.Context) {
 	res := h.sessionService.GetNewestSessions()
+	ctx.Header("Access-Control-Allow-Origin", "*")
 
 	ctx.JSON(http.StatusOK, res)
 }
 
 func (h HistoryController) GetHistory(ctx *gin.Context) {
 	sessionId := ctx.Param("sessionId")
+	ctx.Header("Access-Control-Allow-Origin", "*")
 
 	var exists = h.sessionService.SessionExists(sessionId)
 
