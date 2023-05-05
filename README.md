@@ -23,7 +23,7 @@
 
 
 ## Technologies Used
-- Kasih tahu bahasa pemrogramannya apa
+Kami memakai bahasa Go-lang sebagai bahasa back-end dan bahasa Reactjs sebagai front-end, serta mysql untuk menyimpan database.
 
 
 ## Features
