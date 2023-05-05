@@ -38,8 +38,8 @@ func (q QuestionController) GetAnswer(ctx *gin.Context) {
 	var sessionId string
 	if sessionId = reqBody.SessionID; sessionId == "" {
 		var sessionName string
-		if len(reqBody.Question) > 15 {
-			sessionName = reqBody.Question[:15]
+		if len(reqBody.Question) > 50 {
+			sessionName = reqBody.Question[:50]
 		} else {
 			sessionName = reqBody.Question
 		}

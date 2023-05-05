@@ -139,13 +139,12 @@ func (q QuestionService) findMatch(search, searchAlg string) (models.QuestionNA,
 		topMatches       []SimilarityPair
 		found            = false
 		foundExact       = false
-		first            = true
 		result           models.QuestionNA
 		shortestMatchLen = -1
 	)
 	q.g.Gorm.Order("question_id asc").Limit(25).Find(&questions)
 
-	for !foundExact && (first || len(questions) > 0) {
+	for !foundExact && len(questions) > 0 {
 		for i := 0; !foundExact && i < len(questions); i++ {
 			question := questions[i].Question
 
@@ -172,7 +171,6 @@ func (q QuestionService) findMatch(search, searchAlg string) (models.QuestionNA,
 			}
 
 		}
-		first = false
 		largestIndex := questions[len(questions)-1].QuestionID
 		q.g.Gorm.Where("question_id > ?", largestIndex).Find(&questions)
 	}

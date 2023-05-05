@@ -15,6 +15,10 @@ function Chat({data, setData, selectedAlg}) {
     chatForm.current.value = ''
     data.push({from:'user', chat:input})
 
+    if (!sessionStorage.getItem("session_id")) {
+      sessionStorage.setItem("session_id", "")
+    }
+
     ask(QUESTION_API,
         {"question": input, "search_algorithm":selectedAlg, "session_id": sessionStorage.getItem("session_id")},
         x)

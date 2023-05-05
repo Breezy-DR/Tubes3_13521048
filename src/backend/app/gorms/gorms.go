@@ -12,7 +12,7 @@ type Gorms struct {
 }
 
 func NewGorms() Gorms {
-	host := "ec2-54-169-32-134.ap-southeast-1.compute.amazonaws.com"
+	host := "ec2-54-255-244-5.ap-southeast-1.compute.amazonaws.com"
 	port := "5432"
 	user := "stima"
 	password := "stima"
