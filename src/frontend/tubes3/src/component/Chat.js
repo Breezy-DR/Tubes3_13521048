@@ -15,7 +15,7 @@ function Chat({data, setData, selectedAlg}) {
     chatForm.current.value = ''
     data.push({from:'user', chat:input})
 
-    if (!sessionStorage.getItem("session_id")) {
+    if (sessionStorage.getItem("session_id") === undefined) {
       sessionStorage.setItem("session_id", "")
     }
 
