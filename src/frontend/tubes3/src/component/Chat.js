@@ -6,6 +6,8 @@ import { useState } from 'react';
 function Chat() {
   
   const[data, setData] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+
 
   const QUESTION_API = "http://ec2-54-169-32-134.ap-southeast-1.compute.amazonaws.com:8080/question"
 
@@ -15,6 +17,7 @@ function Chat() {
     ask(QUESTION_API,
         {"question": event.target.value, "search_algorithm":"kmp", "session_id": sessionStorage.getItem("session_id")},
         x)
+        setInputValue('');
   };
 
   function x(json) {
@@ -64,7 +67,9 @@ function Chat() {
       </div>
       <div className='ChatForm'>
         <form onSubmit={handleSubmit}>
-          <input type='text' name="message" placeholder='Masukkan pertanyaan Anda (press enter to submit)' onKeyDown={handleKeyDown}/>
+          <input type='text' value={inputValue} placeholder='Masukkan pertanyaan Anda (press enter to submit)' onKeyDown={handleKeyDown}
+          onChange={(event) => setInputValue(event.target.value)}
+          />
         </form>
       </div>
     </div>
