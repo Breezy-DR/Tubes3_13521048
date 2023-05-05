@@ -28,7 +28,6 @@ Kami memakai bahasa Go-lang sebagai bahasa back-end dan bahasa Reactjs sebagai f
 
 
 ## Features
-List the ready features here:
 - Fitur Pertanyaan Teks 
 - Fitur Kalkulator
 - Fitur Tanggal
