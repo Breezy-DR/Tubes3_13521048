@@ -29,15 +29,6 @@ function Chat() {
     console.log(jsonResponse);
   };  
 
-  const parentToChild = () => {
-    setData()
-  }
-
-  const childToParent = (childData) => {
-    setData(childData);
-    //alert(childData);
-  }
-
   const fetchChats = () => {
     fetch(API).then((res) => res.json()).then((res) => {
       console.log(res);
@@ -48,10 +39,6 @@ function Chat() {
   useEffect(() => {
     fetchChats()
   }, []);
-
-  // const dataToMessage = () => {
-  //   setData({parentToChild});
-  // }
 
   return (
     <div className='chat'>

@@ -1,11 +1,15 @@
 import React from 'react'
 import { useState } from 'react'
+import { useContext } from 'react';
+import SelectedValueContext from './SelectedValueContext';
+
 
 function ChatForm() {
   const [message, setInputValue] = useState('');
   const handleChange = (event) => {
     setInputValue(event.target.value);
   }
+  const selectedValue = useContext(SelectedValueContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -13,7 +17,9 @@ function ChatForm() {
     // ....
     sessionStorage.getItem("session_id");
     sendGetRequestWithJsonBody("http://localhost:8080/question",
-        {"question": event.target.value, "search_algorithm":"kmp", "session_id": "7bbf04e082"},
+        {"question": event.target.value,
+        "search_algorithm":{selectedValue},
+        "session_id": "7bbf04e082"},
         x)
   };
 
