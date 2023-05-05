@@ -48,8 +48,8 @@ Proceed to describe how to install / setup one's local environment / get started
 
 
 ## Usage
-How does one go about using it?
-Provide various use cases and code examples here.
+Pengguna tinggal menambah pertanyaan yang diinginkan dengan format "Tambahkan pertanyaan xxx dengan jawaban yyy" (pastikan xxx tidak diakhiri tanda tanya). Pengguna lalu dapat bertanya mengenai pertanyaan yang sudah dimasukkan. Pengguna juga bisa bertanya hari apa di tanggal tertentu (ketik "DD/MM/YYYY") dan operasi matematika sederhana dengan operator +, -, *, /, (). Pengguna juga bisa menghapus data dengan format “Hapus
+pertanyaan xxx”.
 
 
 ## Project Status
