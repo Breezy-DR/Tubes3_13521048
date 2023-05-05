@@ -36,10 +36,14 @@ func getX(dateStr string) int {
 		day, _ = strconv.ParseFloat(dateList[2], 64)
 	} else if util.StringMatches(dateStr, DateSecondRe) {
 		var dateList []string
-		if dateStr[len(dateStr)-4] == '/' {
+		if dateStr[len(dateStr)-5] == '/' {
 			dateList = strings.Split(dateStr, "/")
 		} else {
 			dateList = strings.Split(dateStr, "-")
+			// extra safe
+			if len(dateList) == 1 {
+				dateList = strings.Split(dateStr, "/")
+			}
 		}
 		fmt.Println(dateList)
 		year, _ = strconv.ParseFloat(dateList[2], 64)
