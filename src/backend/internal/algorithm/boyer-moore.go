@@ -17,7 +17,7 @@ func SearchBM(pattern, text string) int {
 	if patternLen > textLen {
 		return -1
 	}
-	for j > -1 && idx < textLen {
+	for j > -1 && idx < textLen && idx >= 0 {
 		if text[idx] != pattern[j] {
 			ni := charShiftTable[text[idx]]
 			idx += patternLen - int(math.Min(float64(j), float64(ni+1)))
@@ -36,11 +36,15 @@ func SearchBM(pattern, text string) int {
 	return idx + 1
 }
 
-func getCharShiftTable(pattern string) map[uint8]int {
+func getCharShiftTable(pattern string) []int {
 	var (
 		patternLen = len(pattern)
-		shiftMap   = make(map[uint8]int)
+		shiftMap   = make([]int, 128)
 	)
+
+	for i := 0; i < 128; i++ {
+		shiftMap[i] = -1
+	}
 
 	for i := 0; i < patternLen; i++ {
 		shiftMap[pattern[i]] = i
