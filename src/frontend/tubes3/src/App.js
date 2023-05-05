@@ -1,29 +1,25 @@
 // import './App.css';
-import React, { useState } from 'react'
+import React, { useState} from 'react'
 import Sidebar from './component/Sidebar';
 import './AppStyle.scss';
 import Chat from './component/Chat';
 
 function App() {
+  const[data, setData] = useState([]);
+  const[selectedAlg, setSelectedAlg] = useState('kmp');
+
 
   return (
     <div className="App">
       <div className='navbar'>
-        <div className='navbar-container'>
-        <div className='navbar-text'>
-            ChatGPT
-        </div>
-        </div>
-    </div>
+        ChatGPT
+      </div>
     {/* <div className='TitleText'>
     Hi! I'm ChatGPT-chan~
       </div> */}
       <div className='container'>
-      {/* <button onClick={testClick}>button</button> */}
-        
-         
-        <Sidebar/>
-        <Chat/>
+        <Sidebar data={data} setData={setData} selectedAlg={selectedAlg} setSelectedAlg={setSelectedAlg}/>
+        <Chat data={data} setData={setData} selectedAlg={selectedAlg}/>
       </div>
     </div>
   );

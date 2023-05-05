@@ -4,6 +4,7 @@ import (
 	"backend/app/gorms"
 	"backend/app/models"
 	util2 "backend/app/util"
+	"fmt"
 	"time"
 )
 
@@ -21,7 +22,7 @@ func (s SessionService) GetNewSession(sessionName string) string {
 func (s SessionService) GetNewestSessions() []models.Session {
 	var sessions []models.Session
 	s.g.Gorm.Order("creation_date desc").Limit(10).Find(&sessions)
-
+	fmt.Println(sessions)
 	return sessions
 }
 

@@ -1,23 +1,20 @@
 import React from 'react'
-import { useState } from 'react';
 import SelectedValueContext from './SelectedValueContext';
 
-function RadioAlgo() {
-  const [selectedValue, setSelectedValue] = useState('');
-
+function RadioAlgo({selectedAlg, setSelectedAlg}) {
   const handleRadioChange = (event) => {
-    setSelectedValue(event.target.value);
+      setSelectedAlg(event.target.value);
   };
 
   return (
-    <SelectedValueContext.Provider value={selectedValue}>
+    <SelectedValueContext.Provider value={selectedAlg}>
       <div className='RadioAlgo'>
           <div className='buttons'>
               <div className='KMP-Button'>
-                  <input type="radio" value="KMP" checked={selectedValue === 'KMP'} onChange={handleRadioChange}/> KMP
+                  <input type="radio" value="kmp" checked={selectedAlg === 'kmp'} onChange={handleRadioChange}/> KMP
               </div>
               <div className='BM-Button'>
-                  <input type="radio" value="BM" checked={selectedValue === 'BM'} onChange={handleRadioChange}/> BM
+                  <input type="radio" value="bm" checked={selectedAlg === 'bm'} onChange={handleRadioChange}/> BM
               </div>
           </div>
       </div>
