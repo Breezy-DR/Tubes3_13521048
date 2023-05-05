@@ -1,7 +1,7 @@
 
 # Tubes3_13521048
 > Tugas Besar III IF2211 Strategi Algoritma Semester II Tahun 2022/2023 Penerapan String Matching dan Regular Expression dalam Pembuatan ChatGPT Sederhana <br />
-> Live demo [_here_](https://www.example.com). <!-- If you have the project hosted somewhere, include the link here. --> <br />
+> Live demo [_here_](https://youtu.be/rWiu75sMwtU). <!-- If you have the project hosted somewhere, include the link here. --> <br />
 > Kami juga telah mendeploy program kami, website [_here_](http://ec2-52-221-241-44.ap-southeast-1.compute.amazonaws.com:3000/).
 
 ## Table of Contents
