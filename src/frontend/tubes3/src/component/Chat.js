@@ -1,57 +1,52 @@
 import React from 'react'
-import ChatForm from './ChatForm';
 import GPTMessage from './GPTMessage';
 import UserMessage from './UserMessage';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 function Chat() {
   
   const[data, setData] = useState([]);
 
-  const API = 'https://my-json-server.typicode.com/Breezy-DR/chatTesting/Chats'
+  const QUESTION_API = "http://ec2-54-169-32-134.ap-southeast-1.compute.amazonaws.com:8080/question"
 
-  const sendData = async () => {
-    const url = "ec2-54-169-32-134.ap-southeast-1.compute.amazonaws.com:8080/question/";
-    const data = {
-      "question": "ping? namx 5 nama ikan? 2*9^(7-2); 7 nama ikan; sebutkan 7 nama ikan; 2023/11/12?pong",
-      "search_algorithm": "bm",
-      "session_id": "7bbf04e082"
-    };
-    const options = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    };
-    const response = await fetch(url, options);
-    const jsonResponse = await response.json();
-    console.log(jsonResponse);
-  };  
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    data.push({from:'user', chat:event.target.value})
+    ask(QUESTION_API,
+        {"question": event.target.value, "search_algorithm":"kmp", "session_id": sessionStorage.getItem("session_id")},
+        x)
+  };
 
-  const parentToChild = () => {
-    setData()
-  }
-
-  const childToParent = (childData) => {
-    setData(childData);
-    //alert(childData);
-  }
-
-  const fetchChats = () => {
-    fetch(API).then((res) => res.json()).then((res) => {
-      console.log(res);
-      setData(res);
+  function x(json) {
+    sessionStorage.setItem("session_id", json["session_id"]);
+    let responseArr = json['response']
+    let newData = [...data]
+    responseArr.forEach(item => {
+      newData.push({from:'server', chat:item})
+      console.log(item)
     })
+    setData(newData)
   }
 
-  useEffect(() => {
-    fetchChats()
-  }, []);
+  function ask(url, data, callback) {
+    console.log(JSON.stringify(data))
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(json => callback(json))
+        .catch(error => console.error(error));
+  }
 
-  // const dataToMessage = () => {
-  //   setData({parentToChild});
-  // }
+  const handleKeyDown = (event) => {
+    if(event.key === 'Enter') {
+      handleSubmit(event);
+    }
+  }
 
   return (
     <div className='chat'>
@@ -67,7 +62,11 @@ function Chat() {
       }
         <div className='flex-container'></div>
       </div>
-        <ChatForm/>
+      <div className='ChatForm'>
+        <form onSubmit={handleSubmit}>
+          <input type='text' name="message" placeholder='Masukkan pertanyaan Anda (press enter to submit)' onKeyDown={handleKeyDown}/>
+        </form>
+      </div>
     </div>
   )
 }
