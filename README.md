@@ -28,7 +28,6 @@ Kami memakai bahasa Go-lang sebagai bahasa back-end dan bahasa Reactjs sebagai f
 
 
 ## Features
-List the ready features here:
 - Fitur Pertanyaan Teks 
 - Fitur Kalkulator
 - Fitur Tanggal
@@ -42,9 +41,13 @@ List the ready features here:
 
 
 ## Setup
-What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
+1. Install golang di komputer Anda.
+2. Buka terminal dalam folder, ketik “cd src/backend”
+3. Ketik “go mod vendor” yang membangun direktori bernama “vendor” di root directory modul utama.
+4. Ketik “cd app”
+5. Ketik “go build” untuk menjalankan program
+6. Ketik “./app”
 
-Proceed to describe how to install / setup one's local environment / get started with the project.
 
 
 ## Usage
